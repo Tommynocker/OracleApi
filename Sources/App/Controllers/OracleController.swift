@@ -31,7 +31,11 @@ struct OracleController: RouteCollection {
                     
         if let werk = try? req.query.get(String.self, at: "werkstoff") {
             sql = sql + " WHERE WERKSTOFF LIKE '%\(werk)%'"
+        }else {
+            throw Abort(.badRequest)
         }
+        
+        
         
         let query = OracleStatement(stringLiteral: sql )
         let rows = try await connection.execute(query)
