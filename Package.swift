@@ -4,13 +4,17 @@ import PackageDescription
 let package = Package(
     name: "OracleApi",
     platforms: [
-       .macOS(.v13)
+        .macOS(.v13)
     ],
     dependencies: [
-        // 💧 A server-side Swift web framework.
         .package(url: "https://github.com/vapor/vapor.git", from: "4.110.1"),
-        // 🔵 Non-blocking, event-driven networking for Swift. Used for custom executors
-        .package(url: "https://github.com/apple/swift-nio.git", from: "2.65.0"),
+        // 🔵 Non-blocking, event-driven networking for Swift
+        .package(url: "https://github.com/apple/swift-nio.git", from: "2.79.0"),
+        .package(url: "https://github.com/lovetodream/oracle-nio.git", from: "1.0.0-beta.3"),
+        .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
+        
+        
+        
     ],
     targets: [
         .executableTarget(
@@ -19,6 +23,12 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "NIOCore", package: "swift-nio"),
                 .product(name: "NIOPosix", package: "swift-nio"),
+                .product(name: "OracleNIO", package: "oracle-nio"),
+                .product(name: "Fluent", package: "fluent"),
+                // Add FluentOracle dependency
+                .product(name: "OracleNIOMacros", package: "oracle-nio"),
+               
+                
             ],
             swiftSettings: swiftSettings
         ),

@@ -1,11 +1,11 @@
 import Vapor
+import Foundation
 
 func routes(_ app: Application) throws {
-        app.get { req async in
-        "It works!"
-    }
-
-    app.get("hello") { req async -> String in
-        "Hello, world!"
-    }
+    // Middleware
+    app.middleware.use(LogMiddleware())
+    
+    // register Controller
+    try app.register(collection: OracleController())
+    
 }
