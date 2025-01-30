@@ -12,6 +12,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-nio.git", from: "2.79.0"),
         .package(url: "https://github.com/lovetodream/oracle-nio.git", from: "1.0.0-beta.3"),
         .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0"),
+        .package(url: "https://github.com/vapor/fluent-mysql-driver.git", from: "4.0.0"),
         
         
         
@@ -27,6 +28,7 @@ let package = Package(
                 .product(name: "Fluent", package: "fluent"),
                 // Add FluentOracle dependency
                 .product(name: "OracleNIOMacros", package: "oracle-nio"),
+                .product(name: "FluentMySQLDriver", package: "fluent-mysql-driver"),
                
                 
             ],

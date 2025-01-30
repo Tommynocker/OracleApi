@@ -1,5 +1,5 @@
 {
-  "originHash" : "8b5c39dc1ba513d7121ee46316fd8c340f2ff11403563449041dff36cccfc961",
+  "originHash" : "4c938c7928bed8a21fd6d520841498c512f7af0ebb25d983905b8a077a119b7f",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -47,12 +47,39 @@
       }
     },
     {
+      "identity" : "fluent-mysql-driver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/fluent-mysql-driver.git",
+      "state" : {
+        "revision" : "c1422fde19433fa9ded948f83a226291e9ac33a9",
+        "version" : "4.7.0"
+      }
+    },
+    {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/multipart-kit.git",
       "state" : {
         "revision" : "3498e60218e6003894ff95192d756e238c01f44e",
         "version" : "4.7.1"
+      }
+    },
+    {
+      "identity" : "mysql-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/mysql-kit.git",
+      "state" : {
+        "revision" : "ac03d7c3d4be7b6602a73a226b4bfdc97c5b8b11",
+        "version" : "4.9.0"
+      }
+    },
+    {
+      "identity" : "mysql-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/mysql-nio.git",
+      "state" : {
+        "revision" : "d60444dc7b1525000eb443baa08bf79f059202ad",
+        "version" : "1.7.2"
       }
     },
     {

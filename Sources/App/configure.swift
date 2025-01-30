@@ -1,7 +1,7 @@
 import Vapor
 import OracleNIO
 import Fluent
-
+import FluentMySQLDriver
 
 
 // configures your application
@@ -29,7 +29,7 @@ public func configure(_ app: Application) async throws {
     app.lifecycle.use(OracleConnectionController(connection: connection))
     
    
-    // maria 
+    // maria
     app.databases.use(.mysql(hostname: "172.30.1.26", username: "api", password: "N16oftUZEXauA8SibME2", database: "energie"), as: .mysql)
     
     
