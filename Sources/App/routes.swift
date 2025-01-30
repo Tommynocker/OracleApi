@@ -8,4 +8,7 @@ func routes(_ app: Application) throws {
     // register Controller
     try app.register(collection: OracleController())
     
+    // register Controller
+    try app.register(collection: MariaController())
+    
 }
