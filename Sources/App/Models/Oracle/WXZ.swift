@@ -7,7 +7,7 @@ final class WXZ: Model, Content {
     static let schema = "US_BLZ_ARTIKELKONTO_WXZ"
     
     
-    
+    //tesr
     @ID(key: .id)
     var id: UUID?
     
