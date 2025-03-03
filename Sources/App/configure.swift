@@ -12,8 +12,8 @@ public func configure(_ app: Application) async throws {
     
     let config = OracleConnection.Configuration(
         host: "172.20.1.36",
-        port: 12002,
-        service: .serviceName("Test77"),
+        port: 12001,
+        service: .serviceName("prod77"),
         username: "INFOR",
         password: "sysm"
     )

@@ -58,7 +58,7 @@ struct OracleController: RouteCollection {
             throw Abort(.internalServerError, reason: "Oracle connection not found")
         }
         
-        var sql = "SELECT * FROM US_BLZ_ARTIKELKONTO_WXZ"
+        var sql = "SELECT MNR,WERKSTOFF,ZCHNUMMER,STAERKE, LAENGE, BREITE, GEWICHT FROM US_BLZ_ARTIKELKONTO_WXZ"
         
         
         let query = OracleStatement(stringLiteral: sql )
@@ -66,9 +66,9 @@ struct OracleController: RouteCollection {
         
         var result = [WXZ]()
         
-        for try await (mnr, werkstoff, zchnummer,staerke, laenge, breite,gewicht) in rows.decode((String, String, String,Float,Float,Float,Float).self) {
+        for try await (mnr, werkstoff, zchnummer,staerke,laenge, breite, gewicht) in rows.decode((String, String, String,Float, Float, Float, Float).self) {
             
-            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, laenge: laenge, breite: breite, gewicht: gewicht))
+            result.append(.init(mnr: mnr, werkstoff: werkstoff, zchnummer: zchnummer, staerke: staerke,laenge: laenge, breite: breite,gewicht: gewicht))
         }
     
         return result

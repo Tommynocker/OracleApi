@@ -37,11 +37,16 @@ final class WXZ: Model, Content {
    
     init() { }
     
-    init(id: UUID? = nil, mnr: String, werkstoff: String, staerke: Float, laenge: Float, breite: Float, gewicht: Float) {
+    init(id: UUID = UUID(), mnr: String, werkstoff: String, zchnummer: String, staerke: Float, laenge: Float, breite: Float, gewicht: Float) {
         self.id = id
         self.mnr = mnr
         self.werkstoff = werkstoff
+        self.zchnummer = zchnummer
         self.staerke = staerke
+        self.laenge = laenge
+        self.breite = breite
+        self.gewicht = gewicht
+      
     }
 }
 
