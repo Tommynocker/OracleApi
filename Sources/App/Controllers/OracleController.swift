@@ -17,7 +17,7 @@ struct OracleController: RouteCollection {
        
         route.get("wxz", use: getWXZ)
         
-        route.get("test", use: getTest)
+        route.get("wxzall", use: getAllWXZ)
     }
     
     @Sendable
@@ -42,14 +42,41 @@ struct OracleController: RouteCollection {
         
         var result = [WXZ]()
         
-        for try await (mnr, werkstoff, staerke,stk_v,kg_v,stk_l,kg_l,bedarfe_stk,verbr12_kg,ktxt,bemerkung,variante,gueltigkeit,verbrauchq1,verbrauchq2,verbrauchq3,verbrauchq4 ) in rows.decode((String, String, Float,Int,Int,Int,Int,Int,Int,String,String,String,String,Int,Int,Int,Int).self) {
+//        for try await (mnr, werkstoff, staerke,stk_v,kg_v,stk_l,kg_l,bedarfe_stk,verbr12_kg,ktxt,bemerkung,variante,gueltigkeit,verbrauchq1,verbrauchq2,verbrauchq3,verbrauchq4 ) in rows.decode((String, String, Float,Int,Int,Int,Int,Int,Int,String,String,String,String,Int,Int,Int,Int).self) {
+//            
+//            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, stk_v: stk_v, kg_v: kg_v, stk_l: stk_l, kg_l: kg_l, bedarfe_stk: bedarfe_stk, verbr12_kg: verbr12_kg, ktxt: ktxt, bemerkung: bemerkung, variante: variante, gueltigkeit: gueltigkeit, verbrauchq1: verbrauchq1, verbrauchq2: verbrauchq2, verbrauchq3: verbrauchq3, verbrauchq4: verbrauchq4))
+//        }
+    
+        return result
+        
+    }
+    // all WxZ
+    @Sendable
+    func getAllWXZ(req: Request) async throws -> [WXZ] {
+        
+        guard let connection = req.application.storage[OracleStorageKey.self] else {
+            throw Abort(.internalServerError, reason: "Oracle connection not found")
+        }
+        
+        var sql = "SELECT * FROM US_BLZ_ARTIKELKONTO_WXZ"
+        
+        
+        let query = OracleStatement(stringLiteral: sql )
+        let rows = try await connection.execute(query)
+        
+        var result = [WXZ]()
+        
+        for try await (mnr, werkstoff, zchnummer,staerke, leange,breite,gewicht) in rows.decode((String, String, String,Float,Float,Float,Float).self) {
             
-            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, stk_v: stk_v, kg_v: kg_v, stk_l: stk_l, kg_l: kg_l, bedarfe_stk: bedarfe_stk, verbr12_kg: verbr12_kg, ktxt: ktxt, bemerkung: bemerkung, variante: variante, gueltigkeit: gueltigkeit, verbrauchq1: verbrauchq1, verbrauchq2: verbrauchq2, verbrauchq3: verbrauchq3, verbrauchq4: verbrauchq4))
+            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, laenge: leange, breite: breite, gewicht: gewicht))
         }
     
         return result
         
     }
+    
+    
+    
     
     @Sendable
     func getTest(req: Request) async throws -> [WXZ] {
