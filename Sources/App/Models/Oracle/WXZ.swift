@@ -23,7 +23,7 @@ final class WXZ: Model, Content {
     @Field(key: "STAERKE")
     var staerke: Float
     
-    @Field(key: "laenge")
+    @Field(key: "LAENGE")
     var laenge: Float
     
     @Field(key: "BREITE")

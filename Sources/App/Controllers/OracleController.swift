@@ -66,9 +66,9 @@ struct OracleController: RouteCollection {
         
         var result = [WXZ]()
         
-        for try await (mnr, werkstoff, zchnummer,staerke, leange,breite,gewicht) in rows.decode((String, String, String,Float,Float,Float,Float).self) {
+        for try await (mnr, werkstoff, zchnummer,staerke, laenge, breite,gewicht) in rows.decode((String, String, String,Float,Float,Float,Float).self) {
             
-            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, laenge: leange, breite: breite, gewicht: gewicht))
+            result.append(.init(mnr: mnr, werkstoff: werkstoff, staerke: staerke, laenge: laenge, breite: breite, gewicht: gewicht))
         }
     
         return result
