@@ -32,12 +32,17 @@ final class WXZ: Model, Content {
     @Field(key: "GEWICHT")
     var gewicht: Float
     
+    @Field(key: "VERFUEGBAR_STK")
+    var verfuegbar_stk: Int?
+    
+    @Field(key: "VERFUEGBAR_KG")
+    var verfuegbar_kg: Int?
    
     
    
     init() { }
     
-    init(id: UUID = UUID(), mnr: String, werkstoff: String, zchnummer: String, staerke: Float, laenge: Float, breite: Float, gewicht: Float) {
+    init(id: UUID = UUID(), mnr: String, werkstoff: String, zchnummer: String, staerke: Float, laenge: Float, breite: Float, gewicht: Float, verfuegbar_stk: Int, verfuegbar_kg: Int) {
         self.id = id
         self.mnr = mnr
         self.werkstoff = werkstoff
@@ -46,6 +51,8 @@ final class WXZ: Model, Content {
         self.laenge = laenge
         self.breite = breite
         self.gewicht = gewicht
+        self.verfuegbar_stk = verfuegbar_stk
+        self.verfuegbar_kg = verfuegbar_kg
       
     }
 }
