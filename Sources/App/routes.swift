@@ -8,11 +8,7 @@ func routes(_ app: Application) throws {
     // register Oracle Controller
     try app.register(collection: OracleController())
     
-<<<<<<< Updated upstream
-    // register Controller
-=======
     // register Maria Controller
->>>>>>> Stashed changes
     try app.register(collection: MariaController())
     
 }
