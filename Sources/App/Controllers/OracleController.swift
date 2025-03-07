@@ -111,45 +111,7 @@ struct OracleController: RouteCollection {
     }
     
     
-    
-//    @Sendable
-//    func getWXZ(req: Request) async throws -> [WXZ] {
-//        
-//        
-//        
-//    }
-    //    return try await CounterMasterdata.query(on: req.db)
-    //         .filter(\.$aktiv == 1)
-    //         .filter(\.$kanal == 1 )
-    //         .all()
-    //         .compactMap(CounterMasterdataResponseDTO.init)
-    
-    //    func getMasterdata(req: Request) async throws -> [WXZ] {
-    //       return try await CounterMasterdata.query(on: req.db)
-    //            .filter(\.$aktiv == 1)
-    //            .filter(\.$kanal == 1 )
-    //            .all()
-    //            .compactMap(CounterMasterdataResponseDTO.init)
-    //    }
-    
-    // Test connection handler
-    //       func testConnection(req: Request) async throws -> String {
-    //           guard let connection = req.application.storage[OracleStorageKey.self] else {
-    //               throw Abort(.internalServerError, reason: "Oracle connection not found")
-    //           }
-    //
-    //           // Execute a simple test query
-    //           let query = "SELECT 'Hello from Oracle' as greeting FROM dual"
-    //           let rows = try await connection.query(query)
-    //
-    //           // Get the first row and first column value
-    //           guard let firstRow = rows.first,
-    //                 let greeting = try? firstRow.decode(column: 0, as: String.self) else {
-    //               return "Query executed but no results"
-    //           }
-    //
-    //           return greeting
-    //       }
+ 
     
     
 }
