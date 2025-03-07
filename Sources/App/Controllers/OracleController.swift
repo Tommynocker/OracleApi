@@ -14,10 +14,12 @@ struct OracleController: RouteCollection {
     
     func boot(routes: RoutesBuilder) throws {
         let route = routes.grouped("api")
-       
-        route.get("wxz", use: getWXZ)
-        
+        // all wxz
         route.get("wxzall", use: getAllWXZ)
+        
+        // all IcastOrders
+        route.get("icastorders", use: getAllCastOrders)
+        
     }
     
     @Sendable
@@ -75,7 +77,29 @@ struct OracleController: RouteCollection {
         
     }
     
+    // ICAST_CAST_ORDERS
+    @Sendable
+    func getAllCastOrders(req: Request) async throws -> [CastOrders] {
+        
+        guard let connection = req.application.storage[OracleStorageKey.self] else {
+            throw Abort(.internalServerError, reason: "Oracle connection not found")
+        }
+        
+        let sql = "SELECT * FROM ICAST_CAST_ORDERS"
+        
+        
+        let query = OracleStatement(stringLiteral: sql )
+        let rows = try await connection.execute(query)
+        
+        var result = [CastOrders]()
+        
+        for try await (anr, artikel, wm, fv, formnr, abc, flgew, status, kw, datum, fis  ) in rows.decode((String,String, String, String, String, String, Float, String, String, String, String ).self) {
+            
+            result.append(.init(anr: anr, artikel: artikel, wm: wm, fv: fv, formnr: formnr, flgew: flgew, status: status, kw: kw, datum: datum, fis: fis))
+        }
     
+        return result
+    }
     
     
     @Sendable
