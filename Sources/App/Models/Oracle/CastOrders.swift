@@ -44,6 +44,8 @@ final class CastOrders: Model, Content {
     
     @Field(key: "KW")
     var kw: String
+    //Test aölsddkaöldköalds
+    
     
     @Field(key: "DATUM")
     var datum: String
