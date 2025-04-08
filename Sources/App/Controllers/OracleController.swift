@@ -20,6 +20,9 @@ struct OracleController: RouteCollection {
         // all IcastOrders
         route.get("icastorders", use: getAllCastOrders)
         
+        // all Bedarfe
+        route.get("allBedarfe", use: getAllBedarfe)
+        
     }
     
     @Sendable
@@ -60,7 +63,7 @@ struct OracleController: RouteCollection {
             throw Abort(.internalServerError, reason: "Oracle connection not found")
         }
         
-        let sql = "SELECT * FROM US_BLZ_ARTIKELKONTO_WXZ"
+        let sql = "SELECT *  FROM US_BLZ_ARTIKELKONTO_WXZ"
         
         
         let query = OracleStatement(stringLiteral: sql )
@@ -103,11 +106,25 @@ struct OracleController: RouteCollection {
     
     
     @Sendable
-    func getTest(req: Request) async throws -> [WXZ] {
-     
-       
+    func getAllBedarfe(req: Request) async throws -> [Bedarfe] {
         
-        return try await WXZ.query(on: req.db).all()
+        guard let connection = req.application.storage[OracleStorageKey.self] else {
+            throw Abort(.internalServerError, reason: "Oracle connection not found")
+        }
+        
+        let sql = "SELECT ANR, MNR, ARTIKEL, STATUS, TERMIN, SOLL, IST, REST, KUNDE FROM US_BLZ_BEDARFE WHERE MNR LIKE '06%'"
+        
+        let query = OracleStatement(stringLiteral: sql )
+        let rows = try await connection.execute(query)
+        
+        var result = [Bedarfe]()
+       
+        for try await (anr, mnr, artikel, status, termin, soll, ist, rest, kunde) in rows.decode((String, String?, String?, String?, Date?, Float?, Float?, Float?, String?).self) {
+           
+            result.append(.init(anr: anr, mnr: mnr, artikel: artikel, status: status, termin: termin, soll: soll, ist: ist, rest: rest, kunde: kunde))
+        }
+        
+        return result
     }
     
     
