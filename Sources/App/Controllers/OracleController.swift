@@ -194,7 +194,7 @@ struct OracleController: RouteCollection {
             """
 
         if let anr = try? req.query.get(String.self, at: "anr") {
-            sql += " WHERE ARTIKELNR LIKE '%\(anr)%' AND ZUSTAND = 0"
+            sql += " WHERE ARTIKELNR LIKE '%\(anr)%' AND ZUSTAND = 0 AND UPPER(LAGERORT) NOT LIKE '%QM-SPERRLAGER%'"
         } else {
             throw Abort(.badRequest)
         }
