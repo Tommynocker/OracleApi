@@ -24,6 +24,9 @@ struct OracleController: RouteCollection {
 
         // all Bestand
         route.get("allBestand",use: getAllBestand)
+        
+        // all Lagerauffüllungen
+        route.get("allLagerauf",use: getAllLagerAuf)
 
     }
 
@@ -243,6 +246,49 @@ struct OracleController: RouteCollection {
                 stockitemid: stockitemid
             )
             result.append(bestand)
+        }
+
+        return result
+    }
+    
+    @Sendable
+    func getAllLagerAuf(req: Request) async throws -> [Lagerauf] {
+        guard let connection = req.application.storage[OracleStorageKey.self]
+        else {
+            throw Abort(
+                .internalServerError, reason: "Oracle connection not found")
+        }
+        
+        let sql = """
+            SELECT ANR, MNR, LETZTER_AG, DATUM_AG, TERMIN, SOLL, IST, 
+                   REST, KOMM
+            FROM US_BLZ_LAFUELL WHERE MNR LIKE '06110-%'
+            """
+        
+        let query = OracleStatement(stringLiteral: sql)
+        let rows = try await connection.execute(query)
+
+        var result = [Lagerauf]()
+
+        for try await (
+            anr, mnr, lastAG, dateAG, termin, soll, ist, rest, komm
+        ) in rows.decode(
+            (
+                String?, String, String?, String?, Date?, Float?, Float?,
+                Float?, String?
+            ).self)
+        {
+            let lagerAuf = Lagerauf(
+                anr: anr ?? "",
+             mnr: mnr,
+             lastAG: lastAG,
+             dateAG: dateAG,
+             termin: termin,
+             soll: soll,
+             ist: ist,
+             rest: rest,
+             komm: komm)
+            result.append(lagerAuf)
         }
 
         return result
