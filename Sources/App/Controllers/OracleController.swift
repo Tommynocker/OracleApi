@@ -183,21 +183,15 @@ struct OracleController: RouteCollection {
                 .internalServerError, reason: "Oracle connection not found")
         }
         
-        var sql = """
+        let sql = """
             SELECT ARTIKELNR, ME, LAENGE, BREITE, HOEHE, MENGE, LAGERORT, 
                    CHARGENNR, ZUGANGSDAT, ZUGANGSAUFTRAG, ZUGANGSIDENT, 
                    LIEFERANTENNR, ABGANGSDAT, ABGANGSAUFTRAG, ABGANGSIDENT, 
                    ZUSTAND, KUNDENNR, SCSTRING_1, USERFELD, SCSTRING_3, 
                    SCSTRING_4, SCNUMBER_1, SCNUMBER_2, SCNUMBER_3, LVANZ, 
                    ASSIGNSTATUS, STOCKITEMID
-            FROM US_BLZ_BESTAND
+            FROM US_BLZ_BESTAND WHERE ARTIKELNR LIKE '06110-%' AND ZUSTAND = 0 AND UPPER(LAGERORT) NOT LIKE '%QM-SPERRLAGER%'
             """
-
-        if let anr = try? req.query.get(String.self, at: "anr") {
-            sql += " WHERE ARTIKELNR LIKE '%\(anr)%' AND ZUSTAND = 0 AND UPPER(LAGERORT) NOT LIKE '%QM-SPERRLAGER%'"
-        } else {
-            throw Abort(.badRequest)
-        }
         
         let query = OracleStatement(stringLiteral: sql)
         let rows = try await connection.execute(query)
@@ -253,5 +247,84 @@ struct OracleController: RouteCollection {
 
         return result
     }
+    
+//    @Sendable
+//    func getAllBestand(req: Request) async throws -> [Bestand] {
+//        guard let connection = req.application.storage[OracleStorageKey.self]
+//        else {
+//            throw Abort(
+//                .internalServerError, reason: "Oracle connection not found")
+//        }
+//        
+//        var sql = """
+//            SELECT ARTIKELNR, ME, LAENGE, BREITE, HOEHE, MENGE, LAGERORT, 
+//                   CHARGENNR, ZUGANGSDAT, ZUGANGSAUFTRAG, ZUGANGSIDENT, 
+//                   LIEFERANTENNR, ABGANGSDAT, ABGANGSAUFTRAG, ABGANGSIDENT, 
+//                   ZUSTAND, KUNDENNR, SCSTRING_1, USERFELD, SCSTRING_3, 
+//                   SCSTRING_4, SCNUMBER_1, SCNUMBER_2, SCNUMBER_3, LVANZ, 
+//                   ASSIGNSTATUS, STOCKITEMID
+//            FROM US_BLZ_BESTAND
+//            """
+//
+//        if let anr = try? req.query.get(String.self, at: "anr") {
+//            sql += " WHERE ARTIKELNR LIKE '%\(anr)%' AND ZUSTAND = 0 AND UPPER(LAGERORT) NOT LIKE '%QM-SPERRLAGER%'"
+//        } else {
+//            throw Abort(.badRequest)
+//        }
+//        
+//        let query = OracleStatement(stringLiteral: sql)
+//        let rows = try await connection.execute(query)
+//
+//        var result = [Bestand]()
+//
+//        for try await (
+//            artikelnr, me, laenge, breite, hoehe, menge, lagerort,
+//            charge, zugangsdat, zugangsauftrag, zugangsident,
+//            lieferantennr, abgangsdat, abgangsauftrag, abgangsident,
+//            zustand, kundennr, scstring_1, userfeld, scstring_3,
+//            scstring_4, scnumber_1, scnumber_2, scnumber_3, lvanz,
+//            assignstatus, stockitemid
+//        ) in rows.decode(
+//            (
+//                String, String?, Float?, Float?, Float?, Float?, String?,
+//                String?, Date?, String?, Int?, String?, Date?, String?, Float?,
+//                Float?, String?, String?, String?, String?,
+//                String?, Float?, Float?, Float?, Float?,
+//                Float?, Float?
+//            ).self)
+//        {
+//            let bestand = Bestand(
+//                artikelnr: artikelnr,
+//                laenge: laenge, me: me,
+//                breite: breite,
+//                hoehe: hoehe,
+//                menge: menge,
+//                lagerort: lagerort,
+//                charge: charge,
+//                zugangsdat: zugangsdat,
+//                zugangsauftrag: zugangsauftrag,
+//                zugangsident: zugangsident,
+//                lieferantennr: lieferantennr,
+//                abgangsdat: abgangsdat,
+//                abgangsauftrag: abgangsauftrag,
+//                abgangsident: abgangsident,
+//                zustand: zustand,
+//                kundennr: kundennr,
+//                scstring_1: scstring_1,
+//                userfeld: userfeld,
+//                scstring_3: scstring_3,
+//                scstring_4: scstring_4,
+//                scnumber_1: scnumber_1,
+//                scnumber_2: scnumber_2,
+//                scnumber_3: scnumber_3,
+//                lvanz: lvanz,
+//                assignstatus: assignstatus,
+//                stockitemid: stockitemid
+//            )
+//            result.append(bestand)
+//        }
+//
+//        return result
+//    }
 
 }
